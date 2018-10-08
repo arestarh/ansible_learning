@@ -1,0 +1,5 @@
+---
+- hosts: windows
+  name: Configure Windows servers (reverse proxy on iis)
+  roles:
+  - reverse-proxy-on-iis

@@ -1,0 +1,5 @@
+---
+- hosts: linux
+  name: Configure Linux servers (reverse proxy on nginx)
+  roles:
+  - reverse-proxy-on-nginx

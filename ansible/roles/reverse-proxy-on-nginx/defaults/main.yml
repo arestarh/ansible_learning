@@ -1,0 +1,3 @@
+---
+reverse_proxy_listened_hostheader: 'revproxy.kiev.ua'
+reverse_proxy_proxied_hostheader: 'internal-site.local'

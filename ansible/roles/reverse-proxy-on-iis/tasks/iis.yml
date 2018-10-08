@@ -1,0 +1,52 @@
+---
+###### IIS installation and initial configuration ######
+- name: Ensure IIS and IIS Management tools are installed
+  win_feature:
+    name:
+      - Web-Server
+      - Web-Mgmt-Tools
+    state: present
+
+- name: Ensure Default IIS site is removed
+  win_iis_website:
+    name: 'Default Web Site'
+    state: absent
+
+- name: Ensure application pool of Default IIS site is removed
+  win_iis_webapppool:
+    name: 'DefaultAppPool'
+    state: absent
+
+- name: Ensure IIS Application Request Routing is installed
+  win_chocolatey:
+    name: 'iis-arr'
+    state: present
+
+- name: Ensure reverse proxy site folder exists
+  win_file:
+    path: '{{ reverse_proxy_site_folder }}'
+    state: directory
+
+- name: Ensure IIS Application pool for reverse proxy site is created
+  win_iis_webapppool: 
+    name: '{{ reverse_proxy_application_pool_name }}'
+    state: started
+
+- name: Ensure IIS reverse proxy site is created
+  win_iis_website: 
+    name: '{{ reverse_proxy_site_name }}'
+    port: 80
+    hostname: '{{ reverse_proxy_listened_hostheader }}'
+    application_pool: '{{ reverse_proxy_application_pool_name }}'
+    physical_path: '{{ reverse_proxy_site_folder }}'
+    state: started
+
+- name: Enable proxy in IIS configuration file
+  win_shell: |
+    Import-Module -Name WebAdministration
+    Set-WebConfigurationProperty -Filter 'system.webServer/proxy' -Name enabled -Value $true
+
+- name: Ensure reverse proxy site web.config is deployed 
+  win_template:
+    src: 'web.config.j2'
+    dest: '{{ reverse_proxy_site_folder }}\web.config'

@@ -1,0 +1,10 @@
+
+http {
+
+    server {
+        listen       80;
+        server_name  {{ reverse_proxy_listened_hostheader }};
+
+        return 301 {{ reverse_proxy_proxied_hostheader }}$request_uri;
+    }
+}

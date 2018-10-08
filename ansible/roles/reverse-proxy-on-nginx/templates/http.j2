@@ -1,0 +1,20 @@
+
+#user  nobody;
+worker_processes  1;
+
+pid        /run/nginx.pid;
+
+
+events {
+    worker_connections  1024;
+}
+
+
+http {
+    include       mime.types;
+    default_type  application/octet-stream;
+
+    sendfile        on;
+
+    keepalive_timeout  65;
+}

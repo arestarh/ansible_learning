@@ -4,16 +4,37 @@
   yum:
     name: nginx
     state: latest
+  become: yes
 
 - name: Configure nginx service to start at boot and actually start the service
   service:
     name: nginx
     state: started
     enabled: yes
+  become: yes
 
-- name: Ensure reverse proxy configuration template is deployed 
+- name: Ensure reverse proxy Feature-Specific Configuration Files are deployed 
   template:
-    src: 'nginx.conf.j2'
+    src: "{{ item.src }}"
+    dest: "{{ item.dest }}"
+    mode: 0644
+  loop:
+    - {src: http.j2, dest: '/etc/nginx/conf.d/http'}
+    - {src: redirect.j2, dest: '/etc/nginx/conf.d/redirect'}
+
+- name: Ensure reverse proxy main configuration is deployed 
+  copy:
+    src: 'nginx.conf'
     dest: '/etc/nginx/nginx.conf'
     mode: 0644
-  notify: restart nginx service
+
+- name: Verify nginx config
+  command: nginx -t
+  changed_when: false
+  become: yes
+
+- name: Reload nginx configuration
+  service:
+    name: nginx
+    state: reloaded
+    become: yes

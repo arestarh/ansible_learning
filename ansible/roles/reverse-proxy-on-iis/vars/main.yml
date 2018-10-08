@@ -3,4 +3,4 @@ reverse_proxy_site_folder: C:\inetpub\reverse_proxy
 reverse_proxy_site_name: 'reverse_proxy'
 reverse_proxy_application_pool_name: 'reverse_proxy'
 reverse_proxy_listened_hostheader: 'revproxy.kiev.ua'
-reverse_proxy_proxied_hostheader: 'internal-site.local'
+reverse_proxy_proxied_hostheader: 'http://internal-site.local'

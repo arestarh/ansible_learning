@@ -3,6 +3,7 @@
   command: nginx -t
   changed_when: false
   become: yes
+  notify: reload nginx configuration
 
 - name: reload nginx configuration
   service:

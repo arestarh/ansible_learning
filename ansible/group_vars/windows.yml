@@ -1,0 +1,3 @@
+---
+reverse_proxy_listened_hostheader: 'reverse-proxy.com.ua'
+reverse_proxy_proxied_hostheader: 'http://modern-site.local'

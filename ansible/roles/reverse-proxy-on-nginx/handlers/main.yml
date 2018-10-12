@@ -1,5 +1,11 @@
 ---
+- name: nginx config verification
+  command: nginx -t
+  changed_when: false
+  become: yes
+
 - name: reload nginx configuration
   service:
     name: nginx
     state: reloaded
+  become: yes
